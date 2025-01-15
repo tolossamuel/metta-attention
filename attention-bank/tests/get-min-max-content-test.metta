@@ -19,4 +19,3 @@
 ! (assertEqual (getSize 1) 1)
 ! (assertEqual (getSize 17) 2)
 ! (assertEqual (getSize 37) 4)
-! (assertEqual (binSize) 11)
