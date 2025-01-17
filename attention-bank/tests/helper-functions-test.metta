@@ -23,3 +23,4 @@
 
 !(assertEqual (removeDuplicates (a a d c)) (a d c))
 !(assertEqual (removeDuplicates (a a)) (a))
+
