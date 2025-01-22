@@ -8,13 +8,13 @@
     (if (== (get-type $pattern) %Undefined%)
         (add-atom &self (: $pattern (AV $sti $lti $vlti)))
         (let* (
-                ( $stv (getStv $pattern))
+                ( $stv (getStv $pattern)) ; get the simple truth value of the pattern(atom)
                 ( $_ (let $x (collapse (match &self (: $pattern $_) (: $pattern $_)))
                         (let $y (car-atom $x)
-                            (remove-atom &self $y)))))
+                            (remove-atom &self $y))))) ; remove the old atom since changing AV value is not allowed/atoms are immutable
             (if (== $stv (STV 0 0))
-                (add-atom &self (: $pattern (AV $sti $lti $vlti)))
-                (add-atom &self (: $pattern ($stv (AV $sti $lti $vlti)))))))
+                (add-atom &self (: $pattern (AV $sti $lti $vlti))) ; add the atom as a new atom(with AV added/changed)
+                (add-atom &self (: $pattern ($stv (AV $sti $lti $vlti))))))) ; add the new atom(with AV added/changed)
 )
 
  ; getAv function accepts a pattern/node and returns the attention
@@ -64,7 +64,8 @@
         (
             ( (STV $x $y) (get-type $pattern) )
             ( ( (STV $x $y) (AV $a $b $c)) (STV $x $y))
-            ($else (STV 1 0)))
+            ($else (STV 1 0))) ; this seems to be a bug, should be (STV 0 0) 
+                               ; since it doesn't seem important enougn for setAv function
     )
 )
 
