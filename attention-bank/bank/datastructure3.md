@@ -180,3 +180,12 @@ does type check work in metta
     - function that can get sti, lti and vlti of an atom
     - function that can get mean and confidence value of an atom
 
+
+
+
+### Final Decision
+
+- the above function is already implemented but it should make some simple adjutment to support atom type hirerchy and type defination.
+- the getters and setters of attention value and simple truth value of an atom should detect the atom type they are setting and getting.
+- before getting or setting the av and stv value they should check the type of the atom(whether it is a node or a link)
+- my adding this adjustment our system atoms support the type hiererchy of atoms structure so this value will be added as a right place. this also gave us the advantage of detecting, searching and filtering of atoms by thire type.
