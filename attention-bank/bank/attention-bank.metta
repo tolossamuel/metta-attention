@@ -1,6 +1,7 @@
 ; Define initial variables and insert them in newspace called space
 !(bind! &space (new-space))
 !(bind! &atombin (new-space))
+!(bind! &atombin (new-space))
 !(add-atom &space (startingFundsSTI 100000))
 !(add-atom &space (fundsSTI 100000))
 !(add-atom &space (startingFundsLTI 100000))
@@ -11,7 +12,6 @@
 !(add-atom &space (targetLTI 10000))
 !(add-atom &space (STIAtomWage 10))
 !(add-atom &space (LTIAtomWage 10))
-
 
 
 ; Function to compute the minimum of two values
@@ -107,6 +107,7 @@
            ($newstifund (+ $fundsSTI $stiDiff))
            ($newltifund (+ $fundsLTI $ltiDiff))
            ($res (updateImportance $space $pattern $sti $new-sti))
+           ($res (updateImportance $space $pattern $sti $new-sti))
          )
          (attentionValueChanged $pattern $newstifund $newltifund $new-av)
    )
@@ -128,6 +129,7 @@
          ($oldLTIFund (match &space (fundsLTI $fundsLTI) $fundsLTI))
          ($_ (updateLTIFunds $oldLTIFund $newLTIFund))
          ($_ (updateSTIFunds $oldSTIFund $newSTIFund))
+         ($_ (updateAttentionalFocus $pattern))
          ($r (update &atombin))
         )
         $r
@@ -140,7 +142,15 @@
       (let ()
            (remove-atom &space (fundsLTI $old))
            (add-atom &space (fundsLTI $new))
+           (remove-atom &space (fundsLTI $old))
+           (add-atom &space (fundsLTI $new))
       )
+  )
+)
+
+(: updateSTIFunds (-> Number Number empty))
+(= (updateSTIFunds $old $new)
+  (match  &space  (fundsSTI $old)
   )
 )
 
@@ -150,6 +160,9 @@
       (let ()
            (remove-atom &space (fundsSTI $old))
            (add-atom &space (fundsSTI $new))
+           (remove-atom &space (fundsSTI $old))
+           (add-atom &space (fundsSTI $new))
       )
+  )
   )
 )
