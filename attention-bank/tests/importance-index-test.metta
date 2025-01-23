@@ -3,6 +3,7 @@
 !(import! &self metta-attention:attention-bank:bank:atombins)
 !(import! &self metta-attention:attention-bank:bank:importance-index)
 !(import! &self metta-attention:attention-bank:attention-value:getter-and-setter)
+!(import! &self metta-attention:attention-bank:utilities:recentVal)
 
 ;For Testing the update, getMaxSTI, getMinSTI
 !(setAv a (2 2 2))
