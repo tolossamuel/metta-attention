@@ -5,13 +5,18 @@
 ! (setStv A (0.1 0.9))
 
 ; ! (setAv (c) (200 200 0))
-; ! (setStv (c) (0.1 0.9))
+! (setStv (c) (0.1 0.9))
 
 ; ! (setStv A (0.1 0.9))
 ; ! (setStv A (1 0.9))
 
-! (assertEqual (getStv A) (STV 1 0.9))
+! (assertEqual (getStv A) (STV 0.1 0.9))
 ! (assertEqual (getAv A) (AV 200 200 0))
+
+; ! (assertEqual (getAv (c)) (AV 200 200 0))
+! (assertEqual (getStv (c)) (STV 0.1 0.9))
+
+
 ; ! (assertEqual (getAv (v)) (AV 200 200 0))
 ; ! (get-type (v))
 ; ! (assertEqual (getMean A) 1)
