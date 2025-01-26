@@ -35,7 +35,7 @@
 ;;; Parameters:
 ;;;   $incoming_set: A list of incoming links to filter.
 ;;; Returns: A new list containing only the links that are in the AF.
-(: filterLinksInAF (-> List List))
+(: filterLinkupdate_binsInAF (-> List List))
 (= (filterLinksInAF $incoming_set)
     (if (== $incoming_set ())
         ()
@@ -82,3 +82,12 @@
 ; ! (getIncomingSet abebe habbianlink)
 ; output
 ;[((() (habbianlink abebe challa) (habbianlink challa abebe)))]
+
+;Don't forget sorting
+
+(= (nodeMatch $node1 $node2)
+    (if (and (== $node1 $node2) (AtomIsInAF $node2))
+        True
+        False
+    )
+)

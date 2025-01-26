@@ -11,3 +11,4 @@
 
 ; Example Usage
 ! (getIncomingSet abebe habbianlink)
+! (nodeMatch (ConceptNode abebe) (ConceptNode abebe))
