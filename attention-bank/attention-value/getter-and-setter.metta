@@ -2,19 +2,19 @@
 ; and set the attention value to the pattern/node.
 ;
 ; i.e !(set_av A (399 400 1))
-
+!(bind! &n (new-space))
 (: setAv (-> Atom (Number Number Number) Atom))
 (= (setAv $pattern ($sti $lti $vlti))
-    (if (== (get-type $pattern) %Undefined%)
-        (add-atom &self (: $pattern (AV $sti $lti $vlti)))
+    (if (== (collapse (match &n (: $pattern $something) (: $pattern $something))) ())
+        (add-atom &n (: $pattern (AV $sti $lti $vlti)))
         (let* (
                 ( $stv (getStv $pattern))
-                ( $_ (let $x (collapse (match &self (: $pattern $_) (: $pattern $_)))
+                ( $_ (let $x (collapse (match &n (: $pattern $_) (: $pattern $_)))
                         (let $y (car-atom $x)
-                            (remove-atom &self $y)))))
+                            (remove-atom &n $y)))))
             (if (== $stv (STV 0 0))
-                (add-atom &self (: $pattern (AV $sti $lti $vlti)))
-                (add-atom &self (: $pattern ($stv (AV $sti $lti $vlti)))))))
+                (add-atom &n (: $pattern (AV $sti $lti $vlti)))
+                (add-atom &n (: $pattern ($stv (AV $sti $lti $vlti)))))))
 )
 
  ; getAv function accepts a pattern/node and returns the attention
@@ -24,13 +24,15 @@
  
 (: getAv (-> Atom AV))
 (= (getAv $pattern)
-    (case (get-type $pattern)
+    (case (match &n (: $pattern $something) (: $pattern $something))
         (
-            ( (AV $a $b $c) (get-type $pattern) )
-            ( ( (STV $a $b) (AV $x $y $z)) (AV $x $y $z))
-            ($else (AV 0 0 0)))
+            ((: $pattern (AV $a $b $c) )(AV $a $b $c) )
+            ((: $pattern ((STV $a $b) (AV $x $y $z))) (AV $x $y $z))
+            ($else (AV 0 0 0))
+        )
     )
 )
+
 
 
  ; set_stv function accepts a pattern/node with the truthvalues
@@ -41,15 +43,15 @@
 
  (: setStv (-> Atom (Number Number) Atom))
 (= (setStv $pattern ($mean $conf))
-    (if (== (get-type $pattern) %Undefined%)
-        (add-atom &self (: $pattern (STV $mean $conf)))
+     (if (== (collapse (match &n (: $pattern $something) (: $pattern $something))) ())
+        (add-atom &n (: $pattern (STV $mean $conf)))
         (let* ( ( $av (getAv $pattern))
-                ($_ (let $x (collapse (match &self (: $pattern $_) (: $pattern $_)))
+                ($_ (let $x (collapse (match &n (: $pattern $_) (: $pattern $_)))
                         (let $y (car-atom $x)
-                            (remove-atom &self $y)))))
+                            (remove-atom &n $y)))))
             (if (== $av (AV 0 0 0))
-                (add-atom &self (: $pattern (STV $mean $conf)))
-                (add-atom &self (: $pattern ( (STV $mean $conf) $av)))))
+                (add-atom &n (: $pattern (STV $mean $conf)))
+                (add-atom &n (: $pattern ( (STV $mean $conf) $av)))))
     )
 )
 
@@ -60,13 +62,15 @@
 
 (: getStv (-> Atom STV))
 (= (getStv $pattern)
-    (case (get-type $pattern)
+    (case (match &n (: $pattern $something) (: $pattern $something))
         (
-            ( (STV $x $y) (get-type $pattern) )
-            ( ( (STV $x $y) (AV $a $b $c)) (STV $x $y))
-            ($else (STV 1 0)))
+            ( (: $pattern (STV $x $y)) (STV $x $y) )
+            ( (: $pattern ((STV $x $y) (AV $a $b $c))) (STV $x $y))
+            ($else (STV 0 0))
+        )
     )
 )
+
 
 ; getMean retrieves mean from a pattern
 ; i.e !(getMean A)  output: 1 
