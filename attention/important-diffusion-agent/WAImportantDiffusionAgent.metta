@@ -8,7 +8,7 @@
 ;return None
 ; Carries out the importance diffusion process, spreading STI along the
 ; graph according to the configuration settings
-; (: spreadImportance (-> empty))
+(: spreadImportance (-> empty))
 
 (= (spreadImportance)
     (
