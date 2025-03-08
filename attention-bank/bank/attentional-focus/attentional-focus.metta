@@ -1,6 +1,6 @@
 !(bind! &attentionalFocus (new-space))
 
-(= (maxAFSize) 100)
+(= (maxAFSize) 3)
 
 ;Function: atomIsInAF
 ;Description: Checks if a given atom is in the attentional focus space.
@@ -244,7 +244,7 @@
 (: getRandomAtomNotInAF (-> Symbol))
 (= (getRandomAtomNotInAF)
    (let*
-       (
+       (important-diffusion-agent
 
            ($atombin (AtomBin))
         ($allAtoms  (collapse (match $atombin ($x $y) $y)))
@@ -254,6 +254,7 @@
            %Undefined%
         (let*
                (
+              important-diffusion-agent
                    ($flatten (flatten $filteredAtoms))
                    ($randInt (random-int 0 (size-atom $flatten)))
                    ($randomAtom (index-atom $flatten $randInt))
@@ -264,6 +265,7 @@
        )
    )
 )
+
 
 ;;; Function: getIncomingSet
 ;;; Description: Retrieves the set of incoming links of a specific type for a given atom,
@@ -437,3 +439,6 @@
 
 
 
+(= (attentionalFocus)
+    &attentionalFocus
+)
