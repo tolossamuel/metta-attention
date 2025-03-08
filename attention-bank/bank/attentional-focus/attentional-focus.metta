@@ -244,7 +244,7 @@
 (: getRandomAtomNotInAF (-> Symbol))
 (= (getRandomAtomNotInAF)
    (let*
-       (important-diffusion-agent
+       (
 
            ($atombin (AtomBin))
         ($allAtoms  (collapse (match $atombin ($x $y) $y)))
@@ -254,7 +254,6 @@
            %Undefined%
         (let*
                (
-              important-diffusion-agent
                    ($flatten (flatten $filteredAtoms))
                    ($randInt (random-int 0 (size-atom $flatten)))
                    ($randomAtom (index-atom $flatten $randInt))
