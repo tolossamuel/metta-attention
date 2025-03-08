@@ -330,6 +330,17 @@
         )  
     )
 )
+(: getIncomingSetAllType (-> Atom List))
+(= (getIncomingSetAllType $atom )
+    (collapse 
+        (superpose   
+            (
+                (match &attentionalFocus ($type $atom $b) ($type $atom $b))
+                (match &attentionalFocus ($type $b $atom) ($type $b $atom))
+            )
+        )  
+    )
+)
 
 ;This function simply matches if two nodes are equal and they are in AF
 (:nodeMatch (-> Atom Atom Bool))

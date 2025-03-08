@@ -6,13 +6,13 @@
 ;get incoming atom to the target atom
 
 (: incidentAtoms (-> Atom Expression))
-(= (incidentAtoms $atom)
+(= (incidentAtoms $atom )
     (let* (
-        ($incomingSet (getIncomingSetByType $atom habbianlink))
+        ($incomingSet (getIncomingSetAllType $atom))
         ($incoming (incidentAtomsHelper $incomingSet $atom))
-        ($hIncomingSet (removeHebbianLink $incoming))
+       
         )
-        $hIncomingSet
+        $incoming
     )
 
 
@@ -20,6 +20,7 @@
 ;function incidentAtomsHelper
 ;param Expression Atom
 ;retunr Expression
+;remove hebian link from the incoming set also remove asymmetric hebbian link
 (: incidentAtomsHelper (-> Expression Atom Expression))
 (= (incidentAtomsHelper $incommingSet $atom)
     (if (== $incommingSet ())
@@ -34,9 +35,12 @@
             ($targetValue (car-atom $target))
             ($recursive (incidentAtomsHelper $tail $atom))
             )
-            (if (== $source $atom)
-                (cons-atom $targetValue $recursive )
-                (cons-atom $source $recursive)
+            (if (or (== habbianlink $link) (== ASYMMETRIC_HEBBIAN_LINK $link))
+                $recursive
+                (if (== $source $atom)
+                    (cons-atom $targetValue $recursive )
+                    (cons-atom $source $recursive)
+                )
             )
         )
     )

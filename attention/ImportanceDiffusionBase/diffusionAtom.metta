@@ -4,7 +4,7 @@
 ;param atom
 ;return None
 (: diffuseAtom (-> Atom empty))
-(= (diffuseAtom $source)
+(= (diffuseAtom $source )
     (let* (
         ($incidentAtoms (incidentAtoms $source))
         ($hebbianAdjacentAtoms (hebbianAdjacentAtoms $source))

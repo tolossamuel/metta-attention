@@ -24,8 +24,6 @@
                 (cons-atom $head $recursive)
                 (removeHebbianLink $tail)
             )
-            
-
         )
     )
 )
