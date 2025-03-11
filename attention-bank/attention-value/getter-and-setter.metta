@@ -110,7 +110,25 @@
         ((STV $mean $conf) $conf))
     )
 )
-
+;setSTI function accept a pattern and update sti value if the pattern is already exist
+(: setSTI (-> Atom Number empty))
+(= (setSTI $atom $val)
+    (let* (($atomAV (getAv $atom)))
+    (if (== $atomAV %Undefined% )
+        ()
+        (let* (
+            ($head (car-atom $atomAV))
+            ($values (cdr-atom $atomAV))
+            ($sti (car-atom $values))
+            ($tail (cdr-atom $values))
+            ($updateVal (concatTuple ($val) $tail))
+            ($_ (setAv $atom $updateVal))
+        )
+        ()
+        )
+    )
+    )
+)
 ; getSTI retrieves STI from a pattern
 ; i.e !(getSTI A)  output: 400 
 
