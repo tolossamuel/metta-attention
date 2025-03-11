@@ -13,10 +13,12 @@
             ($totaldiffusionAmount (if (== $AForWA AF)
                                         (calculateDiffusionAmount $atom)
                                         (calculateDiffusionAmountWA $atom)
+
                                     )
             ) ; Why shouldn't this be at the top weird
             (($atomToReceive $stiGiven)
                     (if (== $totaldiffusionAmount 0)
+
                         (())
                         (let*
                             (
@@ -76,6 +78,7 @@
                 )
             )
         )
+
     )
 )
 
@@ -193,7 +196,6 @@
         $result
     )
 )
-
 
 (: hebbianProportionSTI (-> Atom Number Atom))
 (= (hebbianProportionSTI $adjacentVector $hebbianMaximumLinkAllocation)
@@ -315,7 +317,6 @@
     )
 )
 
-
 (: tradeSti (-> Atom Atom Number Number))
 (= (tradeSti $source $target $value)
       (let* (
@@ -323,6 +324,7 @@
                 ($targetSTI (getSTI $target))
                 ($newSourceSTI (- $sourceSTI $value))
                 ($newTargetSTI (+ $targetSTI $value))
+
                 ($updateTraget (setSTI $target $newTargetSTI))
                 ($updateSource (setSTI $source $newSourceSTI))
             )
@@ -339,3 +341,4 @@
 ; (= (WAImportanceDiffusionAgent-Run $space)
 ;     (spreadImportanceWA $space)
 ; )
+

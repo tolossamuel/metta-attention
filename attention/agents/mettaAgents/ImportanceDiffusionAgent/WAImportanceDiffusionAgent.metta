@@ -1,8 +1,3 @@
-
-;======================================================
-
-
-
 ;function spreadImportanceWA
 ;param None
 ;return None
@@ -63,3 +58,4 @@
     )
     ($target $val)
 )
+
