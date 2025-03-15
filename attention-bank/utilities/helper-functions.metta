@@ -1,20 +1,23 @@
 (: filter (-> Expression (-> $t Bool) Expression))
 (= (filter $list $predicate)
-   (if (== $list ())
-    ()
-    (let*
-      (
-          ($head (car-atom $list))
-          ($tail (cdr-atom $list))
-          ($res ($predicate $head))
-          ($filteredTail (filter $tail $predicate))
-      )
-      (if $res
-          (cons-atom $head $filteredTail)
-          $filteredTail
-        )
-      )
+   (let $atoms  (collapse (filterHelper $list $predicate))
+    $atoms
    )
+)
+(: filterHelper (-> Expression (-> $t Bool) Expression))
+(= (filterHelper $list $predicate)
+  (let* (
+    ($atom (superpose $list))
+    (($x $y) $atom)
+    )
+    (if (== $y ())
+      (empty)
+      $atom
+    )
+  
+    
+
+  )
 )
 
 (: customFilter (-> Expression (-> Symbol Number Number Bool) Number Number Expression))
@@ -64,22 +67,18 @@
 ;TODO: Figure out why when types are added to this function, It returns []
 ;(: valuesAtIndex (-> Number $list_t $list_t))
 (= (valuesAtIndex $i $handleSetSeq)
-   (if(== $handleSetSeq ())
-     ()
-     (let*(
-         (($index $val) (car-atom $handleSetSeq))
-         ($tail (cdr-atom $handleSetSeq))
-         ($newTail (valuesAtIndex $i $tail))
-        )
-      (
-      if(== $i $index)
-        $val
-        $newTail
-      )
-    )
+   (let $atoms  (valuesAtIndexHelper $i $handleSetSeq)
+    $atoms
   )
 )
-
+(= (valuesAtIndexHelper $i $handleSetSeq)
+  (let ($index $val) (superpose $handleSetSeq)
+  (if (== $i $index)
+    $val
+    (empty)
+  )
+  )
+)
 
  
 ; Recursive helper to calculate the group index
@@ -89,6 +88,7 @@
       (findGroup $imp (+ $sum (pow-math 2 $i)) (+ $i 1))
    )
 )
+
 
 ;a function to find the ceil
 (: ceil (-> Number Number))
