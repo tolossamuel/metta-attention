@@ -142,17 +142,25 @@
     )
 )
 
+
 (: flatten (-> Expression Expression))
 (= (flatten $expr)
-   (if (== $expr ()) 
-       () 
-       (let* (($head (car-atom $expr))
-              ($tail (cdr-atom $expr))
-              ($flattened-head (if (== (get-metatype $head) Expression)
-                                   (flatten $head)
-                                   (cons-atom $head ())))
-              ($flattened-tail (flatten $tail)))
-         (union-atom $flattened-head $flattened-tail)))
+   (
+    let $atoms (collapse (flattenHelper $expr))
+    $atoms
+   )
+)
+(: flattenHelper (-> Expression Expression))
+(= (flattenHelper $expr)
+  (let* (
+    ($atom (superpose $expr))
+    ($flattened-head (if (== (get-metatype $head) Expression)
+                                   (empty)
+                                   (superpose $atom))
+    )
+  )
+  $flattened-head
+  )
 )
 
 
@@ -256,51 +264,29 @@
 ; a function that find the maximum STI value of the  given atoms
 (: findMaxSTI (-> Expression Number))
 (= (findMaxSTI $list)
-  (let* (
-    ($atom (car-atom $list))
-    ($max (getSTI $atom))
-    ($rest (cdr-atom $list))
-    )
-    (if (== $rest ())
-      $max
-      (let* (
-        ($nextTop (car-atom $rest))
-        ($secondMax (getSTI $nextTop))
-        ($tail (cdr-atom $rest))
-        ($mergeList (cons-atom $atom $tail))
-        )
-        (if (> $max $secondMax)
-          (findMaxSTI $mergeList)
-          (findMaxSTI $rest)
-        )
-      )
-    )
+  (let $STIVals (collapse (findMaxSTIHelper $list))
+  (max-atom $STIVals)
+  )
+)
+(: findMaxSTIHelper (-> Expression Number))
+(= (findMaxSTIHelper $list)
+  (let $atom (superpose $list)
+  (getSTI $atom)
   )
 )
 ; a function that find the minimum STI value of the  given atoms
 (: findMinSTI (-> Expression Number))
 (= (findMinSTI $list)
-  (let* (
-    ($atom (car-atom $list))
-    ($max (getSTI $atom))
-    ($rest (cdr-atom $list))
-    )
-    (if (== $rest ())
-      $max
-      (let* (
-        ($nextTop (car-atom $rest))
-        ($secondMax (getSTI $nextTop))
-        ($tail (cdr-atom $rest))
-        ($mergeList (cons-atom $atom $tail))
-        )
-        (if (< $max $secondMax)
-          (findMinSTI $mergeList)
-          (findMinSTI $rest)
-        )
-      )
-    )
+  (let $STIVals (collapse (findMinSTIHelper $list))
+  (min-atom $STIVals)
   )
  )
+ (: findMinSTIHelper (-> Expression Number))
+(= (findMinSTIHelper $list)
+  (let $atom (superpose $list)
+  (getSTI $atom)
+  )
+)
 
 ; Description: the function takes a list of atoms and experessions 
 ;              and returns a new list wich contatins only symobls
