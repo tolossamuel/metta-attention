@@ -66,17 +66,21 @@
 )
 ;TODO: Figure out why when types are added to this function, It returns []
 ;(: valuesAtIndex (-> Number $list_t $list_t))
+(: valuesAtIndex (-> Number $list_t $list_t))
 (= (valuesAtIndex $i $handleSetSeq)
-   (let $atoms  (valuesAtIndexHelper $i $handleSetSeq)
-    $atoms
-  )
-)
-(= (valuesAtIndexHelper $i $handleSetSeq)
-  (let ($index $val) (superpose $handleSetSeq)
-  (if (== $i $index)
-    $val
-    (empty)
-  )
+   (if(== $handleSetSeq ())
+     ()
+     (let*(
+         (($index $val) (car-atom $handleSetSeq))
+         ($tail (cdr-atom $handleSetSeq))
+         ($newTail (valuesAtIndex $i $tail))
+        )
+      (
+      if(== $i $index)
+        $val
+        $newTail
+      )
+    )
   )
 )
 
