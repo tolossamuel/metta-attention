@@ -1,23 +1,20 @@
-(: filter (-> Expression (-> $t Bool) Expression))
+(: filter (-> Expression (-> Atom Bool) Expression))
 (= (filter $list $predicate)
-   (let $atoms  (collapse (filterHelper $list $predicate))
-    $atoms
+   (if (== $list ())
+    ()
+    (let*
+      (
+          ($head (car-atom $list))
+          ($tail (cdr-atom $list))
+          ($res ($predicate $head))
+          ($filteredTail (filter $tail $predicate))
+      )
+      (if $res
+          (cons-atom $head $filteredTail)
+          $filteredTail
+        )
+      )
    )
-)
-(: filterHelper (-> Expression (-> $t Bool) Expression))
-(= (filterHelper $list $predicate)
-  (let* (
-    ($atom (superpose $list))
-    (($x $y) $atom)
-    )
-    (if (== $y ())
-      (empty)
-      $atom
-    )
-  
-    
-
-  )
 )
 
 (: customFilter (-> Expression (-> Symbol Number Number Bool) Number Number Expression))
@@ -158,9 +155,7 @@
 (= (flattenHelper $expr)
   (let* (
     ($atom (superpose $expr))
-    ($flattened-head (if (== (get-metatype $head) Expression)
-                                   (empty)
-                                   (superpose $atom))
+    ($flattened-head (superpose $atom)
     )
   )
   $flattened-head
