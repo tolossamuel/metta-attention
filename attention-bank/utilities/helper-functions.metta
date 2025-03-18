@@ -1,4 +1,4 @@
-(: filter (-> Expression (-> Atom Bool) Expression))
+(: filter (-> Expression (-> $st Bool) Expression))
 (= (filter $list $predicate)
    (if (== $list ())
     ()
