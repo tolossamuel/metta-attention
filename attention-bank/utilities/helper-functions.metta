@@ -1,20 +1,30 @@
 (: filter (-> Expression (-> $st Bool) Expression))
 (= (filter $list $predicate)
-   (if (== $list ())
-    ()
-    (let*
-      (
-          ($head (car-atom $list))
-          ($tail (cdr-atom $list))
-          ($res ($predicate $head))
-          ($filteredTail (filter $tail $predicate))
-      )
-      (if $res
-          (cons-atom $head $filteredTail)
-          $filteredTail
-        )
-      )
+   (let* (
+    ($atoms (collapse (filterHelper $list $predicate)))
+    ($val (collapse (removeEmpty $atoms)))
+    
    )
+   $val
+   )
+)
+(= (removeEmpty $list)
+  (let $atom (superpose $list)
+  (if (== $atom ())
+    (empty)
+    $atom
+  ))
+)
+(= (filterHelper $list $predicate)
+  (let* (
+    ($atom (superpose $list))
+    ($check ($predicate $atom))    
+  )
+    (if $check
+      $atom
+      ()
+    )
+  )
 )
 
 (: customFilter (-> Expression (-> Symbol Number Number Bool) Number Number Expression))
